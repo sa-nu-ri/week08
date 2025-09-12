@@ -53,8 +53,8 @@ services:
       - "8000:8000"
     environment:
       POSTGRES_HOST: product_db # Connects to the 'product_db' service within Docker network
-      AZURE_STORAGE_ACCOUNT_NAME: sanuri0storage # Replace with your Azure Storage account name
-      AZURE_STORAGE_ACCOUNT_KEY: NIx7bm6RxAAXZ4dXlf4OqpwSZV+SRVsgEuFkZ/2nIrzGO9R7p2CJ5TEgDBi24wHdHbsLwIEHzgef+AStdGVLYw== # Replace with your Azure Storage account key
+      AZURE_STORAGE_ACCOUNT_NAME: sanuristg # Replace with your Azure Storage account name
+      AZURE_STORAGE_ACCOUNT_KEY: bdAFphXRwAwQwXUUXjDiwU9yKtZ35Ed8o8tjRNBpESBuT8BYNlR0WUTc449I7722Tgl7nR2d4YiB+AStVUExMg== # Replace with your Azure Storage account key
       AZURE_STORAGE_CONTAINER_NAME: product-images # Replace with your Azure Storage container name
       AZURE_SAS_TOKEN_EXPIRY_HOURS: 24
     depends_on:

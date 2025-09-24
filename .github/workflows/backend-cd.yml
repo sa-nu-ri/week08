@@ -2,19 +2,16 @@ name: CD - Deploy Backend Services to AKS
 
 on:
   workflow_dispatch:
-    inputs:
-      aks_cluster_name:
-        description: 'Name of the AKS Cluster to deploy to'
-        required: true
-        default: '<aks_cluster_name>'
-      aks_resource_group:
-        description: 'Resource Group of the AKS Cluster'
-        required: true
-        default: '<resource_group_name>'
-      aks_acr_name:
-        description: 'Name of ACR'
-        required: true
-        default: '<acr_name>'
+  # Automatically run after running Backend CI
+  workflow_run:
+    workflows: ["Backend CI - Test, Build and Push Images to ACR"]
+    types:
+      - completed
+
+env:
+  AKS_RESOURCE_GROUP: ${{ secrets.AKS_RESOURCE_GROUP }}
+  AKS_CLUSTER_NAME: ${{ secrets.AKS_CLUSTER_NAME }}
+  AKS_ACR_NAME: ${{ secrets.AKS_ACR_NAME }}
 
 jobs:
   deploy_backend:
@@ -37,11 +34,11 @@ jobs:
 
       - name: Set Kubernetes context (get AKS credentials)
         run: |
-          az aks get-credentials --resource-group ${{ github.event.inputs.aks_resource_group }} --name ${{ github.event.inputs.aks_cluster_name }} --overwrite-existing
+          az aks get-credentials --resource-group ${{ env.AKS_RESOURCE_GROUP }} --name ${{ env.AKS_CLUSTER_NAME }} --overwrite-existing
 
       - name: Attach ACR
         run: |
-          az aks update --name ${{ github.event.inputs.aks_cluster_name }} --resource-group ${{ github.event.inputs.aks_resource_group }} --attach-acr ${{ github.event.inputs.aks_acr_name }}
+          az aks update --name ${{ env.AKS_CLUSTER_NAME }} --resource-group ${{ env.AKS_RESOURCE_GROUP }} --attach-acr ${{ env.AKS_ACR_NAME }}
 
       - name: Deploy Backend Infrastructure (Namespace, ConfigMaps, Secrets, Databases)
         run: |

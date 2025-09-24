@@ -5,6 +5,11 @@ name: Frontend CI - Build & Push Image
 on:
   # Manual trigger
   workflow_dispatch:
+  # Automatically run when running Backend CI
+  workflow_run:
+    workflows: ["Backend CI - Test, Build and Push Images to ACR"]
+    types:
+      - in_progress
 
   # Automatically on pushes to main branch
   push:

@@ -7,7 +7,14 @@ name: Backend CI - Test, Build and Push Images to ACR
 on:
   # Manual trigger
   workflow_dispatch:
-
+    # Automatically on pulls from dev and main branch
+  pull_request:
+    branches:
+      - dev
+      - main
+    paths: # Only trigger if changes are in backend directories
+      - 'backend/**'
+      - '.github/workflows/backend_ci.yml' # Trigger if this workflow file changes
   # Automatically on pushes to main branch
   push:
     branches:
